@@ -1,0 +1,9 @@
+pandas
+weaviate-client
+openai
+langchain
+fastapi
+uvicorn
+torch
+transformers
+langchain_openai

@@ -1,0 +1,63 @@
+#services:
+  #  weaviate:
+  #    image: semitechnologies/weaviate:latest
+  #    ports:
+  #      - "8080:8080"
+  #    environment:
+  #      QUERY_DEFAULTS_LIMIT: 20
+  #      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+  #      PERSISTENCE_DATA_PATH: "/var/lib/weaviate"
+  #      ENABLE_MODULES: "text2vec-transformers"
+  #      DEFAULT_VECTORIZER_MODULE: "text2vec-transformers"
+  #      TRANSFORMERS_INFERENCE_API: "http://transformers-inference-api:8000/vectorize"
+  #      # Uncomment and set the following if you use passage and query inference APIs
+  #      # TRANSFORMERS_PASSAGE_INFERENCE_API: "http://transformers-passage-inference-api:port"
+  #      # TRANSFORMERS_QUERY_INFERENCE_API: "http://transformers-query-inference-api:port"
+  #    volumes:
+  #      - weaviate_data:/var/lib/weaviate
+services:
+  weaviate:
+    command:
+      - --host
+      - 0.0.0.0
+      - --port
+      - '8080'
+      - --scheme
+      - http
+    image: cr.weaviate.io/semitechnologies/weaviate:1.25.7
+    ports:
+      - 8080:8080
+      - 50051:50051
+    volumes:
+      - weaviate_data:/var/lib/weaviate
+    restart: on-failure:0
+    environment:
+      CLIP_INFERENCE_API: 'http://multi2vec-clip:8080'
+      OPENAI_API_KEY: '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'
+      QUERY_DEFAULTS_LIMIT: 25
+      AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
+      PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
+      DEFAULT_VECTORIZER_MODULE: 'multi2vec-clip'
+      ENABLE_MODULES: 'multi2vec-clip,generative-openai,generative-cohere'
+      CLUSTER_HOSTNAME: 'node1'
+
+  multi2vec-clip:
+    image: cr.weaviate.io/semitechnologies/multi2vec-clip:sentence-transformers-clip-ViT-B-32-multilingual-v1
+    environment:
+      ENABLE_CUDA: '0'
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.main
+    volumes:
+      - .:/app
+    depends_on:
+      - weaviate
+    environment:
+      WEAVIATE_URL: "http://weaviate:8080"
+      OPENAI_API_KEY: "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"
+
+volumes:
+  weaviate_data:
+
