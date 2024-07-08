@@ -56,7 +56,7 @@ services:
       - weaviate
     environment:
       WEAVIATE_URL: "http://weaviate:8080"
-      OPENAI_API_KEY: "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"
+      OPENAI_API_KEY: "secret-here"
 
 volumes:
   weaviate_data:
