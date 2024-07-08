@@ -9,24 +9,10 @@ from weaviate.connect import ConnectionParams, ProtocolParams
 llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
 
 
-# Function to read and filter CSV
-def read_csv(file_path):
-    df = pd.read_csv(file_path)
-    return df
-
-
-def filter_data(df, criterion):
-    return df[df['Questions'].str.contains(criterion, case=False)]
-
-
 def insert_data_weaviate(data, client, class_name):
     for item in data:
-        # Ensure the keys match those used in the data preparation step
-        prepared_data = {
-            "question": item["Questions"],  # Adjusted to use 'question'
-            "answer": item["Answers"]       # Adjusted to use 'answer'
-        }
-        client.data_object.create(prepared_data, class_name)
+        client.data_object.create(item, class_name)
+    print("Data inserted successfully.")
 
 
 def get_question():
@@ -34,8 +20,7 @@ def get_question():
 
 
 def enrich_question(question):
-    response = llm.generate(f"Enrich the following question for better understanding: {question}", temperature=0.5,
-                            max_tokens=60)
+    response = llm.generate(f"Enrich the following question for better understanding: {question}", temperature=0.5, max_tokens=60)
     return response.strip()
 
 
@@ -58,68 +43,13 @@ def generate_response(context, question, api_key):
 
 def main():
     # Configuration
-    file_path = "Mental_Health_FAQ.csv"
+    file_path = "sat_world_and_us_history.csv"
     weaviate_url = os.getenv("WEAVIATE_URL")
     weaviate_class_name = "MentalHealthFAQ"
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
-    # Step 1: Read and filter CSV data
-    df = read_csv(file_path)
-    filtered_df = filter_data(df, "depression")
-    data_for_weaviate = [
-        {"Questions": row["Questions"], "Answers": row["Answers"]}
-        for index, row in filtered_df.iterrows()
-    ]
-    print("Data for Weaviate:", data_for_weaviate)
-    # Step 2: Insert data into Weaviate
+    df = pd.read_csv(file_path)
 
-    client = weaviate.Client(weaviate_url)
-    try:
-        client.schema.delete_class(weaviate_class_name)
-        print("Schema deleted successfully.")
-    except:
-        print("Schema does not exist, skipping deletion.")
-        pass
-    finally:
-        # Corrected class schema definition
-        class_schema = {
-            "class": weaviate_class_name,
-            "description": "A class to store FAQs related to mental health",
-            "properties": [
-                {
-                    "name": "question",
-                    "dataType": ["text"],
-                    "description": "The FAQ question",
-                    "moduleConfig": {
-                        "multi2vec-clip": {
-                            "vectorizePropertyName": "question"
-                        }
-                    }
-                },
-                {
-                    "name": "answer",
-                    "dataType": ["text"],
-                    "description": "The FAQ answer",
-                    "moduleConfig": {
-                        "multi2vec-clip": {
-                            "vectorizePropertyName": "answer"
-                        }
-                    }
-                }
-            ],
-            "vectorIndexType": "hnsw",
-            "vectorizer": "multi2vec-clip"
-        }
-        client.schema.create_class(class_schema)
-        print("Schema created successfully.")
-
-    # Adjusted data preparation for insertion
-    data_for_weaviate = [
-        {"question": row["Questions"], "answer": row["Answers"]}
-        for index, row in filtered_df.iterrows()
-    ]
-
-    insert_data_weaviate(data_for_weaviate, client, weaviate_class_name)
 
     # Step 3: Get user question
     question = get_question()
