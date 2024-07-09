@@ -58,8 +58,8 @@ def main():
 
     try:
         weaviate_client.collections.delete("AggiocorpData")
-    except:
-        pass
+    except Exception as e:
+        print(f"Error deleting collection: {e}")
     finally:
         weaviate_client.collections.create(
             name="AggiocorpData",
@@ -78,7 +78,8 @@ def main():
 
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, model='text-embedding-ada-002')
     vectordb = WeaviateVectorStore(weaviate_client, "AggiocorpData", "problema", embeddings)
-    my_prompt = r"""
+
+    my_prompt_template = """
     Você é o chatbot da aggiocorp uma empresa de operações de TI e deve sempre responder como OpsBuddy um especialista em tecnologia.
     Considere o contexto definido entre [].
     Responda a pergunta entre <>
@@ -86,11 +87,12 @@ def main():
     Contexto: [{context}]
 
     Pergunta: <{question}>
-
-    Se você não encontrou contexto para esta pergunta ou não sabe respondê-la, responda "OpsBuddy não tem essa informação."
+    
+    Se a pergunta não estiver relacionada à tecnologia e você não encontrar contexto, diga que não sabe.
     """
 
-    my_prompt = PromptTemplate.from_template(my_prompt)
+    my_prompt = PromptTemplate.from_template(my_prompt_template)
+    print(my_prompt_template)
 
     chain = ConversationalRetrievalChain.from_llm(
         llm=MyOpenAI,
@@ -111,7 +113,6 @@ def main():
             response = "O limite do cartão do dono do opsbuddy foi atingido :(."
         end = time.time()
         print("Tempo de resposta: ", end - start, "\tResposta:", response)
-
 
 if __name__ == "__main__":
     main()

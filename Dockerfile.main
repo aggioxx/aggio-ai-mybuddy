@@ -9,11 +9,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the main application code
+# Copy the main application code and aggiocorp.json
 COPY main.py .
+COPY aggiocorp.json .
 
 # Set environment variables (you can also set these in docker-compose.yml)
-ENV WEAVIATE_URL=http://weaviate:8080
+ENV WEAVIATE_URL=weaviate
 ENV OPENAI_API_KEY=your_openai_api_key
 
 # Run the main application

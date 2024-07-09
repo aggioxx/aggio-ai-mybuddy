@@ -7,3 +7,7 @@ torch
 transformers
 langchain_openai
 langchain-community
+langchain_weaviate
+langchain_openai
+langchain_core
+openai
