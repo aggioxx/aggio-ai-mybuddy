@@ -1,323 +1,323 @@
 [
   {
     "problema": "Throttling do meu servidor EC2 na Amazon Web Services",
-    "solução": "Escalar verticalmente meu servidor EC2"
+    "solucao": "Escalar verticalmente meu servidor EC2"
   },
   {
     "problema": "Falha na conexão do banco de dados SQL",
-    "solução": "Verificar as configurações de rede e as regras de firewall"
+    "solucao": "Verificar as configurações de rede e as regras de firewall"
   },
   {
     "problema": "Desempenho lento do aplicativo devido a alta carga",
-    "solução": "Implementar auto-escalonamento para gerenciar a carga"
+    "solucao": "Implementar auto-escalonamento para gerenciar a carga"
   },
   {
     "problema": "Falha na implantação do contêiner Docker",
-    "solução": "Verificar o arquivo Dockerfile e corrigir qualquer erro de configuração"
+    "solucao": "Verificar o arquivo Dockerfile e corrigir qualquer erro de configuração"
   },
   {
     "problema": "Problemas de latência na rede",
-    "solução": "Analisar a topologia da rede e otimizar o roteamento"
+    "solucao": "Analisar a topologia da rede e otimizar o roteamento"
   },
   {
     "problema": "Serviço de email não está enviando mensagens",
-    "solução": "Verificar as configurações do servidor SMTP e autenticação"
+    "solucao": "Verificar as configurações do servidor SMTP e autenticação"
   },
   {
     "problema": "Erros intermitentes de API",
-    "solução": "Monitorar logs para identificar padrões e corrigir bugs no código"
+    "solucao": "Monitorar logs para identificar padrões e corrigir bugs no código"
   },
   {
     "problema": "Backup do sistema não foi concluído",
-    "solução": "Verificar o agendamento de tarefas e espaço disponível em disco"
+    "solucao": "Verificar o agendamento de tarefas e espaço disponível em disco"
   },
   {
     "problema": "Falha de autenticação do usuário",
-    "solução": "Verificar as credenciais e configurar corretamente o servidor de autenticação"
+    "solucao": "Verificar as credenciais e configurar corretamente o servidor de autenticação"
   },
   {
     "problema": "Aplicativo web retornando erro 500",
-    "solução": "Revisar os logs do servidor web para identificar e corrigir problemas de código"
+    "solucao": "Revisar os logs do servidor web para identificar e corrigir problemas de código"
   },
   {
     "problema": "Servidor de arquivos está inacessível",
-    "solução": "Verificar a conexão de rede e as permissões de acesso"
+    "solucao": "Verificar a conexão de rede e as permissões de acesso"
   },
   {
     "problema": "Problemas de compatibilidade com novas versões de software",
-    "solução": "Testar novas versões em um ambiente de staging antes da implantação"
+    "solucao": "Testar novas versões em um ambiente de staging antes da implantação"
   },
   {
     "problema": "Excesso de uso de memória em instâncias EC2",
-    "solução": "Configurar monitoramento de uso de recursos e ajustar a alocação de memória"
+    "solucao": "Configurar monitoramento de uso de recursos e ajustar a alocação de memória"
   },
   {
     "problema": "Serviço de DNS não resolve corretamente",
-    "solução": "Verificar as configurações de DNS e reiniciar o serviço se necessário"
+    "solucao": "Verificar as configurações de DNS e reiniciar o serviço se necessário"
   },
   {
     "problema": "Erro de configuração no servidor Nginx",
-    "solução": "Revisar o arquivo de configuração do Nginx e corrigir erros de sintaxe"
+    "solucao": "Revisar o arquivo de configuração do Nginx e corrigir erros de sintaxe"
   },
   {
     "problema": "Falha na replicação de dados entre servidores",
-    "solução": "Verificar a configuração de replicação e a conectividade entre os servidores"
+    "solucao": "Verificar a configuração de replicação e a conectividade entre os servidores"
   },
   {
     "problema": "Serviço de monitoramento não está gerando alertas",
-    "solução": "Verificar as regras de alerta e ajustar os parâmetros de monitoramento"
+    "solucao": "Verificar as regras de alerta e ajustar os parâmetros de monitoramento"
   },
   {
     "problema": "Problemas de segurança detectados na auditoria",
-    "solução": "Aplicar patches de segurança e revisar as políticas de segurança"
+    "solucao": "Aplicar patches de segurança e revisar as políticas de segurança"
   },
   {
     "problema": "Erros de permissão ao acessar recursos na AWS",
-    "solução": "Verificar as políticas de IAM e ajustar as permissões dos usuários"
+    "solucao": "Verificar as políticas de IAM e ajustar as permissões dos usuários"
   },
   {
     "problema": "Problemas com a integração contínua (CI)",
-    "solução": "Revisar os scripts de build e configuração dos pipelines de CI"
+    "solucao": "Revisar os scripts de build e configuração dos pipelines de CI"
   },
   {
     "problema": "Throttling do meu servidor EC2 na Amazon Web Services",
-    "solução": "Escalar verticalmente meu servidor EC2"
+    "solucao": "Escalar verticalmente meu servidor EC2"
   },
   {
     "problema": "Falha na conexão do banco de dados SQL",
-    "solução": "Verificar as configurações de rede e as regras de firewall"
+    "solucao": "Verificar as configurações de rede e as regras de firewall"
   },
   {
     "problema": "Desempenho lento do aplicativo devido a alta carga",
-    "solução": "Implementar auto-escalonamento para gerenciar a carga"
+    "solucao": "Implementar auto-escalonamento para gerenciar a carga"
   },
   {
     "problema": "Falha na implantação do contêiner Docker",
-    "solução": "Verificar o arquivo Dockerfile e corrigir qualquer erro de configuração"
+    "solucao": "Verificar o arquivo Dockerfile e corrigir qualquer erro de configuração"
   },
   {
     "problema": "Problemas de latência na rede",
-    "solução": "Analisar a topologia da rede e otimizar o roteamento"
+    "solucao": "Analisar a topologia da rede e otimizar o roteamento"
   },
   {
     "problema": "Serviço de email não está enviando mensagens",
-    "solução": "Verificar as configurações do servidor SMTP e autenticação"
+    "solucao": "Verificar as configurações do servidor SMTP e autenticação"
   },
   {
     "problema": "Erros intermitentes de API",
-    "solução": "Monitorar logs para identificar padrões e corrigir bugs no código"
+    "solucao": "Monitorar logs para identificar padrões e corrigir bugs no código"
   },
   {
     "problema": "Backup do sistema não foi concluído",
-    "solução": "Verificar o agendamento de tarefas e espaço disponível em disco"
+    "solucao": "Verificar o agendamento de tarefas e espaço disponível em disco"
   },
   {
     "problema": "Falha de autenticação do usuário",
-    "solução": "Verificar as credenciais e configurar corretamente o servidor de autenticação"
+    "solucao": "Verificar as credenciais e configurar corretamente o servidor de autenticação"
   },
   {
     "problema": "Aplicativo web retornando erro 500",
-    "solução": "Revisar os logs do servidor web para identificar e corrigir problemas de código"
+    "solucao": "Revisar os logs do servidor web para identificar e corrigir problemas de código"
   },
   {
     "problema": "Servidor de arquivos está inacessível",
-    "solução": "Verificar a conexão de rede e as permissões de acesso"
+    "solucao": "Verificar a conexão de rede e as permissões de acesso"
   },
   {
     "problema": "Problemas de compatibilidade com novas versões de software",
-    "solução": "Testar novas versões em um ambiente de staging antes da implantação"
+    "solucao": "Testar novas versões em um ambiente de staging antes da implantação"
   },
   {
     "problema": "Excesso de uso de memória em instâncias EC2",
-    "solução": "Configurar monitoramento de uso de recursos e ajustar a alocação de memória"
+    "solucao": "Configurar monitoramento de uso de recursos e ajustar a alocação de memória"
   },
   {
     "problema": "Serviço de DNS não resolve corretamente",
-    "solução": "Verificar as configurações de DNS e reiniciar o serviço se necessário"
+    "solucao": "Verificar as configurações de DNS e reiniciar o serviço se necessário"
   },
   {
     "problema": "Erro de configuração no servidor Nginx",
-    "solução": "Revisar o arquivo de configuração do Nginx e corrigir erros de sintaxe"
+    "solucao": "Revisar o arquivo de configuração do Nginx e corrigir erros de sintaxe"
   },
   {
     "problema": "Falha na replicação de dados entre servidores",
-    "solução": "Verificar a configuração de replicação e a conectividade entre os servidores"
+    "solucao": "Verificar a configuração de replicação e a conectividade entre os servidores"
   },
   {
     "problema": "Serviço de monitoramento não está gerando alertas",
-    "solução": "Verificar as regras de alerta e ajustar os parâmetros de monitoramento"
+    "solucao": "Verificar as regras de alerta e ajustar os parâmetros de monitoramento"
   },
   {
     "problema": "Problemas de segurança detectados na auditoria",
-    "solução": "Aplicar patches de segurança e revisar as políticas de segurança"
+    "solucao": "Aplicar patches de segurança e revisar as políticas de segurança"
   },
   {
     "problema": "Erros de permissão ao acessar recursos na AWS",
-    "solução": "Verificar as políticas de IAM e ajustar as permissões dos usuários"
+    "solucao": "Verificar as políticas de IAM e ajustar as permissões dos usuários"
   },
   {
     "problema": "Problemas com a integração contínua (CI)",
-    "solução": "Revisar os scripts de build e configuração dos pipelines de CI"
+    "solucao": "Revisar os scripts de build e configuração dos pipelines de CI"
   },
   {
     "problema": "Instabilidade no serviço de banco de dados NoSQL",
-    "solução": "Aumentar a capacidade de leitura/gravação do cluster NoSQL"
+    "solucao": "Aumentar a capacidade de leitura/gravação do cluster NoSQL"
   },
   {
     "problema": "Erros de integração entre microserviços",
-    "solução": "Verificar os contratos de API e implementar testes de integração"
+    "solucao": "Verificar os contratos de API e implementar testes de integração"
   },
   {
     "problema": "Vazamento de memória em aplicação Java",
-    "solução": "Realizar profiling da aplicação para identificar objetos não utilizados e otimizar a alocação de memória"
+    "solucao": "Realizar profiling da aplicação para identificar objetos não utilizados e otimizar a alocação de memória"
   },
   {
     "problema": "Servidor web Apache sobrecarregado",
-    "solução": "Implementar caching de conteúdo estático e ajustar configurações de limites de conexão"
+    "solucao": "Implementar caching de conteúdo estático e ajustar configurações de limites de conexão"
   },
   {
     "problema": "Problemas de latência em comunicações VoIP",
-    "solução": "Verificar a QoS (Quality of Service) da rede e implementar priorização de pacotes"
+    "solucao": "Verificar a QoS (Quality of Service) da rede e implementar priorização de pacotes"
   },
   {
     "problema": "Falha na replicação de bancos de dados distribuídos",
-    "solução": "Rever a configuração de replicação e garantir consistência entre os nós"
+    "solucao": "Rever a configuração de replicação e garantir consistência entre os nós"
   },
   {
     "problema": "Expiração de certificado SSL/TLS",
-    "solução": "Renovar o certificado SSL/TLS e atualizar a configuração nos servidores"
+    "solucao": "Renovar o certificado SSL/TLS e atualizar a configuração nos servidores"
   },
   {
     "problema": "Erros de compatibilidade de navegador em aplicação web",
-    "solução": "Implementar testes de compatibilidade e ajustar o código para suportar diferentes navegadores"
+    "solucao": "Implementar testes de compatibilidade e ajustar o código para suportar diferentes navegadores"
   },
   {
     "problema": "Servidor de aplicação Java não responde",
-    "solução": "Verificar logs de aplicação e reiniciar o servidor de aplicação se necessário"
+    "solucao": "Verificar logs de aplicação e reiniciar o servidor de aplicação se necessário"
   },
   {
     "problema": "Problemas de escalabilidade em ambiente Kubernetes",
-    "solução": "Rever a configuração de pods e ajustar recursos de CPU e memória"
+    "solucao": "Rever a configuração de pods e ajustar recursos de CPU e memória"
   },
   {
     "problema": "Ataques de negação de serviço (DDoS)",
-    "solução": "Implementar firewall de aplicação (WAF) e configurar serviços de mitigação de DDoS"
+    "solucao": "Implementar firewall de aplicação (WAF) e configurar serviços de mitigação de DDoS"
   },
   {
     "problema": "Banco de dados relacional corrompido",
-    "solução": "Restaurar a partir de backup mais recente e revisar o processo de backup"
+    "solucao": "Restaurar a partir de backup mais recente e revisar o processo de backup"
   },
   {
     "problema": "Desempenho lento de consultas SQL complexas",
-    "solução": "Otimizar as consultas SQL e considerar a adição de índices"
+    "solucao": "Otimizar as consultas SQL e considerar a adição de índices"
   },
   {
     "problema": "Problemas de sincronização de dados entre dispositivos móveis",
-    "solução": "Implementar estratégias de sincronização offline e resolver conflitos de dados"
+    "solucao": "Implementar estratégias de sincronização offline e resolver conflitos de dados"
   },
   {
     "problema": "Erros de compilação em pipelines de CI/CD",
-    "solução": "Revisar scripts de build e resolver dependências de pacotes"
+    "solucao": "Revisar scripts de build e resolver dependências de pacotes"
   },
   {
     "problema": "Falha na inicialização de containers Docker",
-    "solução": "Verificar logs de inicialização e ajustar configurações de rede e volumes"
+    "solucao": "Verificar logs de inicialização e ajustar configurações de rede e volumes"
   },
   {
     "problema": "Problemas de autenticação com LDAP",
-    "solução": "Verificar configurações de servidor LDAP e testar conexões"
+    "solucao": "Verificar configurações de servidor LDAP e testar conexões"
   },
   {
     "problema": "Configuração incorreta de balanceamento de carga",
-    "solução": "Revisar configurações de balanceamento de carga e ajustar algoritmos de distribuição"
+    "solucao": "Revisar configurações de balanceamento de carga e ajustar algoritmos de distribuição"
   },
   {
     "problema": "Aplicativo móvel travando após atualização",
-    "solução": "Realizar rollback da atualização e identificar o bug na nova versão"
+    "solucao": "Realizar rollback da atualização e identificar o bug na nova versão"
   },
   {
     "problema": "Excesso de notificações push não entregues",
-    "solução": "Verificar configurações de serviço de notificação e monitorar delivery reports"
+    "solucao": "Verificar configurações de serviço de notificação e monitorar delivery reports"
   },
   {
     "problema": "Erro 404 ao acessar uma página web",
-    "solução": "Verificar o caminho da URL e garantir que o arquivo exista no servidor"
+    "solucao": "Verificar o caminho da URL e garantir que o arquivo exista no servidor"
   },
   {
     "problema": "Servidor web sobrecarregado durante picos de tráfego",
-    "solução": "Configurar balanceamento de carga para distribuir o tráfego entre vários servidores"
+    "solucao": "Configurar balanceamento de carga para distribuir o tráfego entre vários servidores"
   },
   {
     "problema": "Erro de tempo limite no serviço de banco de dados",
-    "solução": "Aumentar o tempo limite de conexão ou otimizar as consultas para melhorar o desempenho"
+    "solucao": "Aumentar o tempo limite de conexão ou otimizar as consultas para melhorar o desempenho"
   },
   {
     "problema": "Falha na instalação de pacotes via apt-get",
-    "solução": "Atualizar os repositórios de pacotes e tentar a instalação novamente"
+    "solucao": "Atualizar os repositórios de pacotes e tentar a instalação novamente"
   },
   {
     "problema": "Erro de rede intermitente em servidores",
-    "solução": "Monitorar a conectividade de rede e substituir componentes de hardware defeituosos"
+    "solucao": "Monitorar a conectividade de rede e substituir componentes de hardware defeituosos"
   },
   {
     "problema": "Certificado SSL expirado",
-    "solução": "Renovar e instalar o certificado SSL atualizado"
+    "solucao": "Renovar e instalar o certificado SSL atualizado"
   },
   {
     "problema": "Aplicação travando devido a falta de recursos",
-    "solução": "Aumentar os recursos alocados, como CPU e RAM, ou otimizar o código da aplicação"
+    "solucao": "Aumentar os recursos alocados, como CPU e RAM, ou otimizar o código da aplicação"
   },
   {
     "problema": "Problemas de sincronização entre servidores de arquivos",
-    "solução": "Configurar um sistema de sincronização automática ou utilizar um sistema de arquivos distribuído"
+    "solucao": "Configurar um sistema de sincronização automática ou utilizar um sistema de arquivos distribuído"
   },
   {
     "problema": "Configurações incorretas de proxy impedindo acesso à internet",
-    "solução": "Revisar e corrigir as configurações de proxy no sistema"
+    "solucao": "Revisar e corrigir as configurações de proxy no sistema"
   },
   {
     "problema": "Erro de permissão ao acessar diretórios",
-    "solução": "Ajustar as permissões dos diretórios e arquivos conforme necessário"
+    "solucao": "Ajustar as permissões dos diretórios e arquivos conforme necessário"
   },
   {
     "problema": "Falha no serviço de cache causando alta latência",
-    "solução": "Reiniciar o serviço de cache e verificar as configurações para otimização"
+    "solucao": "Reiniciar o serviço de cache e verificar as configurações para otimização"
   },
   {
     "problema": "Erro de versão incompatível em bibliotecas de software",
-    "solução": "Atualizar ou reverter para versões compatíveis das bibliotecas"
+    "solucao": "Atualizar ou reverter para versões compatíveis das bibliotecas"
   },
   {
     "problema": "Serviço de mensagens parou de funcionar",
-    "solução": "Reiniciar o serviço e verificar logs para identificar a causa raiz"
+    "solucao": "Reiniciar o serviço e verificar logs para identificar a causa raiz"
   },
   {
     "problema": "Backup incremental falhando regularmente",
-    "solução": "Verificar o espaço em disco e corrigir quaisquer erros de configuração no script de backup"
+    "solucao": "Verificar o espaço em disco e corrigir quaisquer erros de configuração no script de backup"
   },
   {
     "problema": "Desempenho degradado após atualização de software",
-    "solução": "Reverter para a versão anterior ou aplicar patches para resolver os problemas de desempenho"
+    "solucao": "Reverter para a versão anterior ou aplicar patches para resolver os problemas de desempenho"
   },
   {
     "problema": "Configurações de firewall bloqueando tráfego legítimo",
-    "solução": "Revisar e ajustar as regras de firewall para permitir o tráfego necessário"
+    "solucao": "Revisar e ajustar as regras de firewall para permitir o tráfego necessário"
   },
   {
     "problema": "Falha na autenticação multifator (MFA)",
-    "solução": "Verificar as configurações de MFA e garantir que todos os dispositivos e tokens estejam corretamente configurados"
+    "solucao": "Verificar as configurações de MFA e garantir que todos os dispositivos e tokens estejam corretamente configurados"
   },
   {
     "problema": "Tempo de resposta lento do serviço DNS",
-    "solução": "Configurar servidores DNS secundários e otimizar a configuração do DNS"
+    "solucao": "Configurar servidores DNS secundários e otimizar a configuração do DNS"
   },
   {
     "problema": "Erro de autenticação no serviço LDAP",
-    "solução": "Verificar as credenciais e a configuração do servidor LDAP"
+    "solucao": "Verificar as credenciais e a configuração do servidor LDAP"
   },
   {
     "problema": "Serviço de monitoramento não detecta falhas de serviço",
-    "solução": "Revisar e atualizar as configurações e parâmetros do serviço de monitoramento"
+    "solucao": "Revisar e atualizar as configurações e parâmetros do serviço de monitoramento"
   }
 ]
 
