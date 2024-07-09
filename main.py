@@ -1,69 +1,146 @@
 import os
-import openai
-import pandas as pd
+import json
+import time
 import weaviate
-from langchain_openai import OpenAI  # Update the import
-from weaviate.connect import ConnectionParams, ProtocolParams
-
-# Initialize the OpenAI model
-llm = OpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"))
-
-
-def insert_data_weaviate(data, client, class_name):
-    for item in data:
-        client.data_object.create(item, class_name)
-    print("Data inserted successfully.")
+from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
+from langchain.vectorstores import Weaviate
+from langchain_core.prompts import PromptTemplate
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from weaviate.collections.classes.config import Property, DataType
 
 
-def get_question():
-    return input("Please enter your question: ")
+class AggiocorpData:
+    def __init__(self, problema, solucao):
+        self.problema = problema
+        self.solucao = solucao
+
+    def __repr__(self):
+        return f"AggiocorpData(problema='{self.problema[:50]}...', solucao='{self.solucao[:50]}...')"
 
 
-def enrich_question(question):
-    response = llm.generate(f"Enrich the following question for better understanding: {question}", temperature=0.5, max_tokens=60)
-    return response.strip()
+def initialize_weaviate(weaviate_url):
+    weaviate_client = weaviate.connect_to_local(host=weaviate_url, port=8080)
+    return weaviate_client
 
 
-def search_weaviate(client, question, class_name):
-    result = client.query.get(class_name, ["Questions", "Answers"]).with_near_text({"concepts": [question]}).do()
-    return result
+def read_json(file_path):
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data
 
 
-def generate_response(context, question, api_key):
-    openai.api_key = api_key
-    response = openai.Completion.create(
-        engine="davinci",
-        prompt=f"{context}\n\nQuestion: {question}\nAnswer:",
-        temperature=0.7,
-        max_tokens=150,
-        top_p=1.0
-    )
-    return response
+def batch_insert(client, data, batch_size=100):
+    try:
+        with client.batch.fixed_size(batch_size=batch_size, concurrent_requests=4) as batch:
+            for item in data:
+                problem = AggiocorpData(
+                    problema=item['problema'],
+                    solucao=item['solução']
+                )
+
+                problem_data = {
+                    "problema": problem.problema,
+                    "solucao": problem.solucao
+                }
+
+                # Add to batch request
+                batch.add_object(properties=problem_data, collection="AggiocorpData")
+    finally:
+        print("Batch request completed.")
+        client.close()
+
+
+def conversational_chat(query, chain):
+    chat_history = []
+    result = chain({"question": query, "chat_history": chat_history})
+    chat_history.append((query, result["answer"]))
+    return result["answer"]
 
 
 def main():
-    # Configuration
-    file_path = "sat_world_and_us_history.csv"
+    file_path = "./aggiocorp.json"
     weaviate_url = os.getenv("WEAVIATE_URL")
-    weaviate_class_name = "MentalHealthFAQ"
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
-    df = pd.read_csv(file_path)
+    MyOpenAI = ChatOpenAI(temperature=0.5, model_name='gpt-3.5-turbo', openai_api_key="here-you-set-the-openai-api-key")
+    weaviate_client = initialize_weaviate(weaviate_url)
+    print("Clients initialized.")
 
+    data = read_json(file_path)
+    # V3 weaviate client (deprecated)
+    # class_schema = {
+    #     "class": "HistoricalEvent",
+    #     "vectorizer": "text2vec-transformers",
+    #     "properties": [
+    #         {
+    #             "name": "Event",
+    #             "dataType": ["text"]
+    #         },
+    #         {
+    #             "name": "Year",
+    #             "dataType": ["int"]
+    #         },
+    #         {
+    #             "name": "Location",
+    #             "dataType": ["text"]
+    #         },
+    #         {
+    #             "name": "Significance",
+    #             "dataType": ["text"]
+    #         }
+    #     ]
+    # }
 
-    # Step 3: Get user question
-    question = get_question()
+    try:
+        weaviate_client.collections.delete("aggiocorp")
+    except:
+        pass
+    finally:
+        class_schema = {
+            "name": "AggiocorpData",
+            "description": "Schema for Aggiocorp data",
+            "vectorizer_config": "text2vec-transformers",
+            "properties": [
+                Property(name="problema", dataType=[DataType.TEXT]),
+                Property(name="solucao", dataType=[DataType.TEXT])
+            ]
+        }
+        weaviate_client.collections.create(**class_schema)
+        print("Collection AggiocorpData was created.")
 
-    # Step 4: Enrich the question
-    enriched_question = enrich_question(question)
+    batch_insert(weaviate_client, data)
 
-    # Step 5: Query Weaviate for context
-    weaviate_results = search_weaviate(client, enriched_question, weaviate_class_name)
-    context = " ".join([item['properties']['Answers'] for item in weaviate_results['data']['Get'][weaviate_class_name]])
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, model='gpt-3.5-turbo')
+    vectorstore = Weaviate(weaviate_client, "AggiocorpData", "solucao", embeddings, by_text=False)
+    my_prompt = r"""
+    Você é o chatbot da aggiocorp uma empresa de operações de TI e deve sempre responder como OpsBuddy um especialista em tecnologia.
+    Considere o contexto definido entre [].
+    Responda a pergunta entre <>
 
-    # Step 6: Generate response using OpenAI
-    response = generate_response(context, question, openai_api_key)
-    print("Response:", response.choices[0].text.strip())
+    Contexto: [{context}]
+
+    Pergunta: <{question}>
+
+    Se você não encontrou contexto para esta pergunta ou não sabe respondê-la, responda "OpsBuddy não tem essa informação."
+    """
+
+    my_prompt = PromptTemplate.from_template(my_prompt)
+
+    chain = ConversationalRetrievalChain.from_llm(
+        llm=MyOpenAI,
+        retriever=vectorstore.as_retriever(),
+        chain_type="stuff",
+        verbose=True,
+        combine_docs_chain_kwargs={'prompt': my_prompt}
+    )
+
+    while True:
+        print("Olá, sou o opsbuddy, como posso te ajudar?")
+        query = input("")
+        start = time.time()
+        response = conversational_chat(query, chain)
+        end = time.time()
+        print("Tempo de resposta: ", end - start, "\tResposta:", response)
 
 
 if __name__ == "__main__":

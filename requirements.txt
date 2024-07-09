@@ -1,4 +1,3 @@
-pandas
 weaviate-client
 openai
 langchain
@@ -7,3 +6,4 @@ uvicorn
 torch
 transformers
 langchain_openai
+langchain-community
