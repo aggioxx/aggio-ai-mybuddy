@@ -15,9 +15,11 @@
     async function sendQuery() {
         const query = document.getElementById("query").value;
         const responseElement = document.getElementById("response");
+        const publicIP = "http://3.81.106.254:8000";
+        const endpoint = `${publicIP}/query`;
 
         try {
-            const response = await fetch("http://localhost:8000/query", {
+            const response = await fetch(endpoint, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

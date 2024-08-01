@@ -23,18 +23,10 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.main
+      dockerfile: Dockerfile
     environment:
       WEAVIATE_URL: weaviate
-      OPENAI_API_KEY: sk-proj-2XyPJtzPVQocrZEGzxjwT3BlbkFJnjzq0hy9N8022PPKgODl
-    depends_on:
-      - weaviate
+      OPENAI_API_KEY: open_ai_key
     ports:
       - 8000:8000
     command: [ "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" ]
-  web:
-    image: nginx:alpine
-    ports:
-      - 80:80
-    volumes:
-      - ./index.html:/usr/share/nginx/html/index.html
