@@ -12,6 +12,8 @@ import weaviate.classes.config as wc
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -28,7 +30,6 @@ class AggiocorpData:
 
     def __repr__(self):
         return f"AggiocorpData(problema='{self.problema[:50]}...', solucao='{self.solucao[:50]}...')"
-
 
 def initialize_weaviate(weaviate_url):
     weaviate_client = weaviate.connect_to_local(host=weaviate_url, port=8080, headers={
