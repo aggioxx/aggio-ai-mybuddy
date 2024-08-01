@@ -1,13 +1,24 @@
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from contextlib import asynccontextmanager
 import os
 import json
-import time
 import weaviate
 from langchain_weaviate.vectorstores import WeaviateVectorStore
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 import weaviate.classes.config as wc
-from openai import RateLimitError
+from starlette.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 class AggiocorpData:
@@ -45,7 +56,9 @@ def conversational_chat(query, chain):
     return result["answer"]
 
 
-def main():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global chain
     file_path = "./aggiocorp.json"
     weaviate_url = os.getenv("WEAVIATE_URL")
     openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -87,7 +100,7 @@ def main():
     Contexto: [{context}]
 
     Pergunta: <{question}>
-    
+
     Se a pergunta não estiver relacionada à tecnologia e você não encontrar contexto, diga que não sabe.
     """
 
@@ -101,18 +114,22 @@ def main():
         verbose=True,
         combine_docs_chain_kwargs={'prompt': my_prompt}
     )
+    yield
+    print("Cleaning up clients.")
 
-    while True:
-        print("Olá, sou o opsbuddy, como posso te ajudar?")
-        query = input("")
-        start = time.time()
-        try:
-            response = conversational_chat(query, chain)
-        except RateLimitError as e:
-            print(f"RateLimitError: {e} - Please check your OpenAI API quota and billing details.")
-            response = "O limite do cartão do dono do opsbuddy foi atingido :(."
-        end = time.time()
-        print("Tempo de resposta: ", end - start, "\tResposta:", response)
 
-if __name__ == "__main__":
-    main()
+app = FastAPI(lifespan=lifespan)
+
+
+@app.get("/", response_class=HTMLResponse)
+async def get():
+    with open("index.html") as f:
+        return HTMLResponse(content=f.read())
+
+
+@app.post("/query")
+async def query(request: Request):
+    data = await request.json()
+    query = data.get("query")
+    response = conversational_chat(query, chain)
+    return {"response": response}

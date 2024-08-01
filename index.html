@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpsBuddy Chatbot</title>
+</head>
+<body>
+<h1>OpsBuddy Chatbot</h1>
+<input type="text" id="query" placeholder="Digite sua pergunta">
+<button onclick="sendQuery()">Enviar</button>
+<p id="response"></p>
+
+<script>
+    async function sendQuery() {
+        const query = document.getElementById("query").value;
+        const responseElement = document.getElementById("response");
+
+        try {
+            const response = await fetch("http://localhost:8000/query", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ query })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            responseElement.textContent = data.response;
+        } catch (error) {
+            responseElement.textContent = `Error: ${error.message}`;
+        }
+    }
+</script>
+</body>
+</html>
