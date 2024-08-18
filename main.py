@@ -60,7 +60,7 @@ def conversational_chat(query, chain):
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     global chain
-    file_path = "./aggiocorp.json"
+    file_path = "data/aggiocorp.json"
     weaviate_url = os.getenv("WEAVIATE_URL")
     openai_api_key = os.getenv("OPENAI_API_KEY")
 
