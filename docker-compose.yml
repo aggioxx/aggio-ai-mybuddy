@@ -13,7 +13,7 @@ services:
       - 8080:8080
       - 50051:50051
     environment:
-      OPENAI_API_KEY: sk-proj-2XyPJtzPVQocrZEGzxjwT3BlbkFJnjzq0hy9N8022PPKgODl
+      OPENAI_API_KEY: Replace-API_KEY here
       QUERY_DEFAULTS_LIMIT: 25
       AUTHENTICATION_ANONYMOUS_ACCESS_ENABLED: 'true'
       PERSISTENCE_DATA_PATH: '/var/lib/weaviate'
