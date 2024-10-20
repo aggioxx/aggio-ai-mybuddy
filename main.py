@@ -7,13 +7,12 @@ import weaviate
 from langchain_weaviate.vectorstores import WeaviateVectorStore
 from langchain.chains.conversational_retrieval.base import ConversationalRetrievalChain
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer, AutoModel, HfApiEngine
 import weaviate.classes.config as wc
 from starlette.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -21,7 +20,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 class AggiocorpData:
     def __init__(self, problema, solucao):
@@ -31,11 +29,10 @@ class AggiocorpData:
     def __repr__(self):
         return f"AggiocorpData(problema='{self.problema[:50]}...', solucao='{self.solucao[:50]}...')"
 
+
 def initialize_weaviate(weaviate_url):
-    weaviate_client = weaviate.connect_to_local(host=weaviate_url, port=8080, headers={
-        "X-OpenAI-Api-Key": os.getenv("OPENAI_API_KEY"),
-    })
-    return weaviate_client
+    client = weaviate.Client(weaviate_url)
+    return client
 
 
 def read_json(file_path):
@@ -45,9 +42,9 @@ def read_json(file_path):
 
 
 def insert_data(client, data):
-    aggiocorp = client.collections.get("AggiocorpData")
-    aggiocorp.data.insert_many(data)
-    print("Data inserted on weaviate.")
+    aggiocorp = client.data_object.get("AggiocorpData")
+    client.batch(data)
+    print("Data inserted into Weaviate.")
 
 
 def conversational_chat(query, chain):
@@ -62,41 +59,66 @@ async def lifespan(app: FastAPI):
     global chain
     file_path = "data/aggiocorp.json"
     weaviate_url = os.getenv("WEAVIATE_URL")
-    openai_api_key = os.getenv("OPENAI_API_KEY")
 
-    MyOpenAI = ChatOpenAI(temperature=0.5, model_name='gpt-3.5-turbo', openai_api_key=openai_api_key)
+    api_token = os.getenv("HUGGINGFACE_API_TOKEN")
+    HfApiEngine().client.token = api_token
+
+    # Initialize LLaMA model
+    model_name = "meta-llama/Llama-3.2-3B-Instruct"
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForCausalLM.from_pretrained(model_name)
+    local_pipeline = pipeline("text-generation", model=model, tokenizer=tokenizer)
+
+    # Initialize Weaviate client
     weaviate_client = initialize_weaviate(weaviate_url)
-    print("Clients initialized.")
+    print("Weaviate and LLM clients initialized.")
 
+    # Read data and initialize schema in Weaviate
     data = read_json(file_path)
 
     try:
-        weaviate_client.collections.delete("AggiocorpData")
+        weaviate_client.schema.delete_class("AggiocorpData")
     except Exception as e:
         print(f"Error deleting collection: {e}")
-    finally:
-        weaviate_client.collections.create(
-            name="AggiocorpData",
-            description="Schema for Aggiocorp data",
-            vectorizer_config=wc.Configure.Vectorizer.text2vec_openai(
-                model="ada",
-            ),
-            generative_config=wc.Configure.Generative.openai(),
-            properties=[
-                wc.Property(name="problema", data_type=wc.DataType.TEXT),
-                wc.Property(name="solucao", data_type=wc.DataType.TEXT)]
-        )
-        print("Collection AggiocorpData was created.")
 
+    # Create schema
+    schema = {
+        "class": "AggiocorpData",
+        "description": "Schema for Aggiocorp data",
+        "properties": [
+            {"name": "problema", "dataType": ["text"]},
+            {"name": "solucao", "dataType": ["text"]}
+        ]
+    }
+    weaviate_client.schema.create_class(schema)
+    print("Collection AggiocorpData was created.")
+
+    # Insert data
     insert_data(weaviate_client, data)
 
-    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key, model='text-embedding-ada-002')
+    # Embedding model
+    embedding_model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    embedding_tokenizer = AutoTokenizer.from_pretrained(embedding_model_name, use_auth_token=api_token)
+    embedding_model = AutoModel.from_pretrained(embedding_model_name, )
+
+    def generate_embeddings(texts):
+        inputs = embedding_tokenizer(texts, padding=True, truncation=True, return_tensors="pt")
+        outputs = embedding_model(**inputs)
+        embeddings = outputs.last_hidden_state.mean(dim=1)
+        return embeddings
+
+    # Generate embeddings for the problems
+    data_texts = [item['problema'] for item in data]
+    embeddings = generate_embeddings(data_texts)
+
+    # Initialize WeaviateVectorStore
     vectordb = WeaviateVectorStore(weaviate_client, "AggiocorpData", "problema", embeddings)
 
+    # Define prompt template
     my_prompt_template = """
     Você é o chatbot da aggiocorp uma empresa de operações de TI e deve sempre responder como OpsBuddy um especialista em tecnologia.
     Considere o contexto definido entre [].
-    Responda a pergunta entre <>
+    Responda a pergunta entre <>.
 
     Contexto: [{context}]
 
@@ -108,8 +130,9 @@ async def lifespan(app: FastAPI):
     my_prompt = PromptTemplate.from_template(my_prompt_template)
     print(my_prompt_template)
 
+    # Initialize ConversationalRetrievalChain
     chain = ConversationalRetrievalChain.from_llm(
-        llm=MyOpenAI,
+        llm=local_pipeline,
         retriever=vectordb.as_retriever(),
         chain_type="stuff",
         verbose=True,
@@ -134,3 +157,8 @@ async def query(request: Request):
     query = data.get("query")
     response = conversational_chat(query, chain)
     return {"response": response}
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8000)
